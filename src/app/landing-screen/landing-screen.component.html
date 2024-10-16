@@ -1,22 +1,17 @@
 <div class="mainScreen">
-
-    <h1><span style="color: #FFB000;">Men</span>alth</h1>
-
-
-
+    <h1><span style="color: #00FFFF;">Neuro</span>Haven</h1>
     <div style="display: flex; justify-content: center;text-align: center;">
         <div class="content">
-            <p class="self">#1 Self Evaluting</p>
+            <p class="self">#1 Self Evaluating</p>
             <p class="calmYourself">Calm yourself down</p>
-            <p style="color: white; opacity: 60%;">Help yourself become a better person</p>
-
+            <p style="color: rgb(255, 255, 255); opacity: 60%;">Help yourself become a better person</p>
 
             <div class="btnHolders" style="display: flex; justify-content: center; gap: 2rem; padding-top: 1.4rem;">
-                <div routerLink="questionScreen" class="goBtn">Let's Go</div>
+                <button (click)="navigateToQuestionScreen()" class="goBtn">Let's Go</button>
                 <div class="watchButton">Watch</div>
             </div>
-
 
             <img src="/assets/images/person.png" alt="">
         </div>
     </div>
+</div>

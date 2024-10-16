@@ -20,7 +20,7 @@
 }
 
 .self {
-    color: #FFB000;
+    color: #00FFFF;
     opacity: 80%;
 
 }
@@ -34,12 +34,12 @@
 
 
 .goBtn {
-    border: 2px solid #FFB000;
+    background: #00FFFF;
     border-radius: 19px;
     width: fit-content;
-    padding-inline: 1rem;
+    padding-inline: 1.5rem;
     padding-block: 0.5rem;
-    color: white;
+    color: black;
     transition: all 0.3s;
 }
 
@@ -48,7 +48,7 @@
 }
 
 .watchButton {
-    background: #FFB000;
+    background: #00FFFF;
     border-radius: 19px;
     width: fit-content;
     padding-inline: 1.5rem;

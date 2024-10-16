@@ -1,0 +1,20 @@
+.results-container {
+background-image: url('../../assets/dimaag.jpg');
+  background-size: cover; /* Cover the whole container */
+  color: #ffffff; /* Default text color */
+  text-align: center; /* Center text */
+  height: 100vh; /* Full height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.results-header {
+  font-size: 3em; /* Header size */
+}
+
+.results-message {
+  font-size: 1.5em; /* Message size */
+  margin-top: 20px; /* Space between header and message */
+}

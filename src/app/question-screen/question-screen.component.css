@@ -51,7 +51,7 @@
     padding: 3rem;
     background-color: rgba(17, 25, 40, 0.55);
     border-radius: 12px;
-    backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(3px) saturate(180%);
     animation: cardAnimation 0.4s linear forwards;
     cursor: pointer;
     user-select: none;
@@ -78,7 +78,7 @@
     margin-top: 0.7rem;
     border-radius: 1rem;
 
-    background: #FF7E15;
+    background: #8706ff;
     display: flex;
     justify-content: center;
     align-items: center;

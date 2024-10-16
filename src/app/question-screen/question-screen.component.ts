@@ -1,13 +1,13 @@
-
-
-import { AfterViewChecked, AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ApplicationService } from '../application.service';
+import { Router } from '@angular/router'; // Import Router
 
-
-
+// Declare external libraries (MediaPipe components)
 declare var Camera: any;
 declare var FaceMesh: any;
 declare var drawConnectors: any;
+declare var FACEMESH_TESSELATION: any;
+
 @Component({
   selector: 'app-question-screen',
   templateUrl: './question-screen.component.html',
@@ -15,102 +15,13 @@ declare var drawConnectors: any;
 })
 export class QuestionScreenComponent implements OnInit, AfterViewInit {
 
-  constructor(private applicationService: ApplicationService) { }
-
   videoElement: any;
   canvasElement: any;
   contextElem: any;
-  ngAfterViewInit(): void {
-    this.setup();
-  }
-
-
-
-  setup() {
-    this.videoElement = document.querySelector("#cameraInput");
-    // navigator.mediaDevices.getUserMedia({ video: true })
-    //   .then(this.handleCameraFeed);
-    this.canvasElement = document.querySelector("#canvasInput");
-    this.contextElem = this.canvasElement.getContext('2d');
-
-
-
-    this.startCamera();
-  }
-
-
   camera: any;
-
-  startCamera() {
-
-
-    try {
-
-      const faceMesh = new FaceMesh({
-        locateFile: (file: any) => {
-          return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
-        }
-      });
-
-      this.camera = new Camera(this.videoElement, {
-        onFrame: async () => {
-          await faceMesh.send({ image: this.videoElement });
-        },
-        width: 1280,
-        height: 720
-      });
-
-      this.camera.start();
-
-      faceMesh.onResults((res: any) => {
-        this.handleResults(res)
-      });
-    } catch (err) {
-
-    }
-  }
-
-
-  handleResults = (results: any) => {
-    this.contextElem.save();
-    this.contextElem.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
-    this.contextElem.drawImage(
-      results.image, 0, 0, this.canvasElement.width, this.canvasElement.height);
-    if (results.multiFaceLandmarks) {
-      for (const landmarks of results.multiFaceLandmarks) {
-        // @ts-ignore
-        drawConnectors(this.contextElem, landmarks, FACEMESH_TESSELATION,
-          { color: '#C0C0C070', lineWidth: 1 });
-        /** 
-      // @ts-ignore
-      drawConnectors(this.contextElem, landmarks, FACEMESH_RIGHT_EYE, { color: '#FF3030' });
-      // @ts-ignore
-      drawConnectors(this.contextElem, landmarks, FACEMESH_RIGHT_EYEBROW, { color: '#FF3030' });
-      // @ts-ignore 
-      drawConnectors(this.contextElem, landmarks, FACEMESH_RIGHT_IRIS, { color: '#FF3030' });
-      // @ts-ignore
-      drawConnectors(this.contextElem, landmarks, FACEMESH_LEFT_EYE, { color: '#FF3030' });
-      // @ts-ignore
-      drawConnectors(this.contextElem, landmarks, FACEMESH_LEFT_EYEBROW, { color: '#FF3030' });
-      // @ts-ignore
-      drawConnectors(this.contextElem, landmarks, FACEMESH_LEFT_IRIS, { color: '#FF3030' });
-      // @ts-ignore
-      drawConnectors(this.contextElem, landmarks, FACEMESH_FACE_OVAL, { color: '#FF3030' });
-      // @ts-ignore
-      drawConnectors(this.contextElem, landmarks, FACEMESH_LIPS, { color: '#FF3030' });*/
-      }
-    }
-    this.contextElem.restore();
-  }
-
-  handleCameraFeed = (res: any) => {
-    console.log(res);
-    this.videoElement.srcObject = res;
-
-  }
-
+  
   listOfQuestions: any[] = [];
-
+  totalScore: number = 0; 
   questionProgress = {
     a: 0,
     b: 0,
@@ -119,85 +30,112 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit {
     answered: 0,
   };
 
+  constructor(private applicationService: ApplicationService, private router: Router) {} // Inject Router
+
   ngOnInit(): void {
-
+    // Fetch the list of questions from the service
     this.applicationService.returnListOfQuestions().subscribe((res: any) => {
-      console.log(res);
       this.listOfQuestions = res;
-      // this.listOfQuestions.forEach((question:any) => {
-      // })
-
-      this.questionProgress = {
-        a: 0,
-        b: 0,
-        c: 0,
-        total: this.listOfQuestions.length,
-        answered: 0,
-      }
-    })
+      this.questionProgress.total = this.listOfQuestions.length;
+    });
   }
 
+  ngAfterViewInit(): void {
+    this.setupCameraAndCanvas();
+  }
 
-  makeSelectionGreen(classGiven: any, count: string) {
+  setupCameraAndCanvas() {
+    this.videoElement = document.querySelector("#cameraInput");
+    this.canvasElement = document.querySelector("#canvasInput");
+    this.contextElem = this.canvasElement.getContext('2d');
 
+    // Initialize FaceMesh and Camera
+    const faceMesh = new FaceMesh({
+      locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`,
+    });
 
+    this.camera = new Camera(this.videoElement, {
+      onFrame: async () => {
+        await faceMesh.send({ image: this.videoElement });
+      },
+      width: 1280,
+      height: 720
+    });
+
+    this.camera.start();
+
+    faceMesh.onResults((results: any) => {
+      this.handleFaceMeshResults(results);
+    });
+  }
+
+  handleFaceMeshResults(results: any) {
+    this.contextElem.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
+    this.contextElem.drawImage(results.image, 0, 0, this.canvasElement.width, this.canvasElement.height);
+
+    if (results.multiFaceLandmarks) {
+      for (const landmarks of results.multiFaceLandmarks) {
+        drawConnectors(this.contextElem, landmarks, FACEMESH_TESSELATION, {
+          color: '#C0C0C070',
+          lineWidth: 1,
+        });
+      }
+    }
+  }
+
+  // Handle option selection (prevent multiple selections)
+  makeSelectionGreen(classGiven: string, count: string) {
     let position = classGiven.split("_")[1];
 
-    // @ts-ignore
-    console.log(document.querySelector(`.${classGiven}`).style.backgroundColor)
-    // @ts-ignore
-    if (document.querySelector(`.${classGiven}`).style.backgroundColor != "green") {
+    const element = document.querySelector(`.${classGiven}`) as HTMLElement;
+    if (element && element.style.backgroundColor !== "green") {
       switch (count) {
         case "a":
-          // @ts-ignore
-
           this.questionProgress.a++;
-
-
-
-          // @ts-ignore
-          document.querySelector(`.b_${position}`).style.visibility = "hidden";
-          // @ts-ignore
-          document.querySelector(`.c_${position}`).style.visibility = "hidden";
-
+          this.disableOtherOptions(position, "a");
           break;
         case "b":
           this.questionProgress.b++;
-          // @ts-ignore
-          document.querySelector(`.a_${position}`).style.visibility = "hidden";
-          // @ts-ignore
-          document.querySelector(`.c_${position}`).style.visibility = "hidden";
+          this.disableOtherOptions(position, "b");
           break;
         case "c":
-          // @ts-ignore
-          document.querySelector(`.b_${position}`).style.visibility = "hidden";
-          // @ts-ignore
-          document.querySelector(`.a_${position}`).style.visibility = "hidden";
           this.questionProgress.c++;
+          this.disableOtherOptions(position, "c");
           break;
       }
       this.questionProgress.answered++;
-
+      element.style.backgroundColor = "green";
     }
-    if (this.questionProgress.answered == this.questionProgress.total) {
-      console.log("ANSWERED ALL OF THE QUESTIONS");
+
+    // If all questions are answered, proceed to the next step
+    if (this.questionProgress.answered === this.questionProgress.total) {
       this.proceedFurther();
     }
-
-    // @ts-ignore
-    document.querySelector(`.${classGiven}`).style.backgroundColor = "green";
-
-    console.log(this.questionProgress)
-
-
   }
 
+  disableOtherOptions(position: string, selectedOption: string) {
+    const options = ["a", "b", "c"].filter(opt => opt !== selectedOption);
+    options.forEach(opt => {
+      const optionElement = document.querySelector(`.${opt}_${position}`) as HTMLElement;
+      if (optionElement) {
+        optionElement.style.visibility = "hidden";
+      }
+    });
+  }
 
   proceedFurther() {
-
-    let percentageComposition;
-
+    const averageScore = (this.questionProgress.a + this.questionProgress.b + this.questionProgress.c) / (this.questionProgress.answered || 1);
+    let resultMessage = '';
+  
+    if (averageScore >= 3) {
+      resultMessage = 'You seem to be managing well!';
+    } else if (averageScore >= 2) {
+      resultMessage = 'You’re doing okay, but there’s room for improvement.';
+    } else {
+      resultMessage = 'Consider seeking support for better mental health.';
+    }
+  
+    // Navigate to results screen with the resultMessage and score
+    this.router.navigate(['/results-screen'], { state: { result: resultMessage, score: Math.round(averageScore) } });
   }
-
-
 }

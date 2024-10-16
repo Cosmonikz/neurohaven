@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; // Import Router
 
 @Component({
   selector: 'app-landing-screen',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingScreenComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { } // Inject Router
 
   ngOnInit(): void {
   }
 
+  navigateToQuestionScreen(): void { // Add this method
+    this.router.navigate(['/question-screen']);
+  }
 }

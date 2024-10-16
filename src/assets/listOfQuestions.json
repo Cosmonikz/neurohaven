@@ -1,62 +1,62 @@
 [
     {
-        "question": "Do you like to share your feelings to your loved ones?",
+        "question": " How often do you feel overwhelmed by your responsibilities?",
         "a": "Yes everyday",
         "b": "Sometimes",
         "c": "Very rare"
     },
     {
-        "question": "Are you giving yourself 'me time' to yourself?",
-        "a": "Everyday",
-        "b": "Trying to give, but time don't permits",
-        "c": "No"
+        "question": "How well do you manage stress in challenging situations?",
+        "a": "Very Well",
+        "b": "Moderately Well",
+        "c": "Not well"
     },
     {
-        "question": "Do you share your everyday experience to your loved ones?",
-        "a": "Yes everyday",
+        "question": "How often do you feel anxious or worried without a clear reason?",
+        "a": "Frequently",
         "b": "Sometimes",
         "c": "Very rare"
     },
     {
-        "question": "How are you feeling most of the time ?",
-        "a": "I am happy most of the time",
-        "b": "I am sad sometimes",
+        "question": "How would you describe your current mood most of the time?",
+        "a": "Happy and content",
+        "b": "Neutral or mixed",
         "c": "I always feel sad and can't concentrate on my life"
     },
     {
-        "question": "Do you feel discouraged about your future ?",
-        "a": "I am not particularly discouraged about my future",
-        "b": "I feel discouraged about my future sometimes",
-        "c": "I feel like my future is hopeless and I can't do anything about it"
+        "question": "Do you find it easy to relax and unwind after a long day?",
+        "a": "Yes, easily",
+        "b": "Sometimes",
+        "c": "No, I struggle to relax"
     },
     {
-        "question": "Do you have a feeling like you are a failure ?",
-        "a": "No, I have confidence on myself",
-        "b": "I feel I have failed more than the average person",
-        "c": "I feel I am a complete failure as a person"
+        "question": "How often do you feel disconnected or detached from those around you?",
+        "a": "Rarely",
+        "b": "Occasionally",
+        "c": "Often"
     },
     {
-        "question": "Are you having fun in your life ?",
-        "a": "I get happy as much as I used to",
-        "b": "I don't enjoy things as I used to",
-        "c": "I am dissatisfied or boredwith everything"
+        "question": "How often do you experience difficulty focusing on tasks?",
+        "a": "Rarely",
+        "b": "Sometimes",
+        "c": "Frequently"
     },
     {
-        "question": "Do you cry lately ?",
-        "a": "I don't cry more than any usual",
-        "b": "I cry more now than before",
-        "c": "I used be able to cry but, noe i am not able to cry properly"
+        "question": "How satisfied are you with the amount of sleep you are getting?",
+        "a": "Very satisfied",
+        "b": "Moderately satisfied",
+        "c": "Dissatisfied"
     },
     {
-        "question": "Have you lost interest in your surroundings ?",
-        "a": "No, I am every bit interested in things now then I ever was",
-        "b": "I am having less interest in any activity lately",
-        "c": "I have lost most of my interest in almost everything out there"
+        "question": "How often do you feel a lack of motivation or energy?",
+        "a": "Rarely",
+        "b": "Occasionally",
+        "c": "Frequently"
     },
     {
-        "question": "Have you faced difficuty in making any decision lately ?",
-        "a": "I make decision carefully and I am responsible for them",
-        "b": "I put off making decisionmore than Iever used to",
-        "c": "I can't make decision at all on my own"
+        "question": "How would you describe your overall mental well-being at this time?",
+        "a": "Positive",
+        "b": "Neutral",
+        "c": "Negative"
     }
 ]
