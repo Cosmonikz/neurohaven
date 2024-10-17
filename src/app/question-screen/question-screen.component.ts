@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ApplicationService } from '../application.service';
-import { Router } from '@angular/router'; // Import Router
+import { Router } from '@angular/router';
 
 // Declare external libraries (MediaPipe components)
 declare var Camera: any;
@@ -14,14 +14,12 @@ declare var FACEMESH_TESSELATION: any;
   styleUrls: ['./question-screen.component.css']
 })
 export class QuestionScreenComponent implements OnInit, AfterViewInit {
-
   videoElement: any;
   canvasElement: any;
   contextElem: any;
   camera: any;
-  
+
   listOfQuestions: any[] = [];
-  totalScore: number = 0; 
   questionProgress = {
     a: 0,
     b: 0,
@@ -30,10 +28,9 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit {
     answered: 0,
   };
 
-  constructor(private applicationService: ApplicationService, private router: Router) {} // Inject Router
+  constructor(private applicationService: ApplicationService, private router: Router) {}
 
   ngOnInit(): void {
-    // Fetch the list of questions from the service
     this.applicationService.returnListOfQuestions().subscribe((res: any) => {
       this.listOfQuestions = res;
       this.questionProgress.total = this.listOfQuestions.length;
@@ -49,7 +46,6 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit {
     this.canvasElement = document.querySelector("#canvasInput");
     this.contextElem = this.canvasElement.getContext('2d');
 
-    // Initialize FaceMesh and Camera
     const faceMesh = new FaceMesh({
       locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`,
     });
@@ -83,7 +79,6 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Handle option selection (prevent multiple selections)
   makeSelectionGreen(classGiven: string, count: string) {
     let position = classGiven.split("_")[1];
 
@@ -107,7 +102,6 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit {
       element.style.backgroundColor = "green";
     }
 
-    // If all questions are answered, proceed to the next step
     if (this.questionProgress.answered === this.questionProgress.total) {
       this.proceedFurther();
     }
@@ -124,18 +118,19 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit {
   }
 
   proceedFurther() {
-    const averageScore = (this.questionProgress.a + this.questionProgress.b + this.questionProgress.c) / (this.questionProgress.answered || 1);
+    const totalScore = this.questionProgress.a * 3 + this.questionProgress.b * 2 + this.questionProgress.c * 1;
+    const averageScore = totalScore / (this.questionProgress.answered || 1);
     let resultMessage = '';
   
+    // Set conditions based on the averageScore
     if (averageScore >= 3) {
-      resultMessage = 'You seem to be managing well!';
+      resultMessage = 'You do not need mental support.'; // Good mental health
     } else if (averageScore >= 2) {
-      resultMessage = 'You’re doing okay, but there’s room for improvement.';
+      resultMessage = 'You’re doing okay, but there’s room for improvement.'; // Okay
     } else {
-      resultMessage = 'Consider seeking support for better mental health.';
+      resultMessage = 'Consider seeking support for better mental health.'; // Need support
     }
   
-    // Navigate to results screen with the resultMessage and score
     this.router.navigate(['/results-screen'], { state: { result: resultMessage, score: Math.round(averageScore) } });
   }
-}
+}  

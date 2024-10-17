@@ -5,11 +5,9 @@ import { QuestionScreenComponent } from './question-screen/question-screen.compo
 import { ResultsScreenComponent } from './results-screen/results-screen.component';
 
 const routes: Routes = [
-  { path: '', component: LandingScreenComponent },
-  { path: 'question-screen', component: QuestionScreenComponent },
-  { path: 'results-screen', component: ResultsScreenComponent },
-  // Add more routes as needed
-  { path: '**', redirectTo: '', pathMatch: 'full' } // Wildcard route
+  { path: '', component: LandingScreenComponent }, // Landing page route
+  { path: 'questions', component: QuestionScreenComponent },
+  { path: 'results-screen', component: ResultsScreenComponent }
 ];
 
 @NgModule({
