@@ -1,25 +1,50 @@
 .mainContent {
-    background: url(/assets/134196.webp);
+    background: url(/assets/134196.webp) no-repeat center center; /* Center the background */
     width: 100vw;
     height: 100vh;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; /* Cover the whole area */
     display: flex;
-    justify-content: center;
-    overflow-y: auto;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    overflow-y: auto; /* Allow scrolling if content overflows */
     color: white;
     padding: 0 1rem;
+    position: relative; /* Ensure child elements can be absolutely positioned */
 }
 
-.mainContent .title {
+.faceInput {
+    position: absolute; /* Absolute positioning for the camera */
+    top: 20px; /* Distance from the top */
+    right: 20px; /* Distance from the right */
+    width: 150px; /* Width of the camera box */
+    height: 150px; /* Height of the camera box */
+    border: 2px solid #00FFFF; /* Optional: Add a border to the camera box */
+    border-radius: 10px; /* Optional: Rounded corners */
+    overflow: hidden; /* Hide overflow */
+}
+
+#cameraInput, #canvasInput {
+    width: 100%; /* Make video and canvas fill the container */
+    height: 100%; /* Make video and canvas fill the container */
+}
+
+.title {
     display: flex;
     justify-content: center;
     color: white;
     padding-top: 1rem;
+    font-size: 2rem; /* Increase font size */
+}
+
+.questionList {
+    width: 100%; /* Make questionList take full width */
+    display: flex;
+    flex-direction: column; /* Stack question cards vertically */
+    align-items: center; /* Center align question cards */
 }
 
 .questionCard {
-    width: 90vw; /* Adjusts the width for mobile screens */
+    width: 90vw; /* Mobile-friendly width */
     margin-top: 1rem;
     padding: 2rem;
     background-color: rgba(17, 25, 40, 0.55);
@@ -28,6 +53,7 @@
     cursor: pointer;
     user-select: none;
     animation: cardAnimation 0.4s linear forwards;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
 }
 
 .questionOption {
@@ -39,21 +65,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1rem; /* Adjust text size for better readability on mobile */
+    font-size: 1rem; /* Adjust text size for better readability */
 }
 
 @media screen and (min-width: 600px) {
     .questionCard {
-        width: 60vw;
+        width: 60vw; /* Wider cards for larger screens */
     }
 
     .questionOption {
-        font-size: 1.2rem;
+        font-size: 1.2rem; /* Increase font size for larger screens */
     }
-}
-
-.faceInput {
-    position: absolute;
-    right: 0;
-    transform-origin: top right;
 }

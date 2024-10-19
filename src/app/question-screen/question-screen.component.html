@@ -1,29 +1,26 @@
 <div class="mainContent">
-
-
-
     <div class="faceInput">
-        <video id="cameraInput" autoplay playinline></video>
+        <video id="cameraInput" autoplay playsinline></video>
         <canvas id="canvasInput"></canvas>
     </div>
 
-    <div>
+    <div class="content">
         <h2 class="title">Answer The Following Questions</h2>
         <div class="questionList">
             <div *ngFor="let question of listOfQuestions; let position = index;">
-
                 <div class="questionCard">
                     <h3>Q) {{question.question}}</h3>
 
                     <div (click)="makeSelectionGreen('a_'+position, 'a')" class="questionOption a_{{position}}">
-                        {{question.a}}</div>
+                        {{question.a}}
+                    </div>
                     <div (click)="makeSelectionGreen('b_'+position, 'b')" class="questionOption b_{{position}}">
-                        {{question.b}}</div>
+                        {{question.b}}
+                    </div>
                     <div (click)="makeSelectionGreen('c_'+position, 'c')" class="questionOption c_{{position}}">
-                        {{question.c}}</div>
-
+                        {{question.c}}
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
