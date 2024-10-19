@@ -19,35 +19,16 @@
     justify-content: center;
     color: white;
     padding-top: 1rem;
-    /* animation: doSlickAnimation 0.6s linear forwards; */
-}
-
-@keyframes doSlickAnimation {
-    0% {
-        transform: scale(0.9);
-        padding-top: 2rem;
-    }
-
-    100% {
-        transform: scale(1ś);
-        padding-top: 1rem;
-    }
-
 }
 
 .questionOption {
     background: fixed;
 }
 
-.questionList {}
-
 .questionCard {
-
-
     width: 40vw;
     margin-top: 2rem;
     height: 50vh;
-
     padding: 3rem;
     background-color: rgba(17, 25, 40, 0.55);
     border-radius: 12px;
@@ -55,21 +36,6 @@
     animation: cardAnimation 0.4s linear forwards;
     cursor: pointer;
     user-select: none;
-
-}
-
-
-@keyframes cardAnimation {
-    0% {
-        transform: scale(0.9);
-        padding-top: 2rem;
-    }
-
-    100% {
-        transform: scale(1ś);
-        padding-top: 1rem;
-    }
-
 }
 
 .questionOption {
@@ -77,25 +43,52 @@
     width: 100%;
     margin-top: 0.7rem;
     border-radius: 1rem;
-
     background: #8706ff;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-
 .faceInput {
-    /* width: 200px;
-    height: 200px; */
-    /* background: red; */
     position: absolute;
     right: 0;
     transform-origin: top right;
-    /* scale: 0.3; */
-    
 }
 
 #cameraInput {
     display: none;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .mainContent {
+    height: auto;
+    padding: 1rem;
+  }
+
+  .questionCard {
+    width: 90vw;
+    height: auto;
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .questionOption {
+    height: auto;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .faceInput {
+    transform: scale(0.5);
+    right: 5%;
+    top: 5%;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
 }
