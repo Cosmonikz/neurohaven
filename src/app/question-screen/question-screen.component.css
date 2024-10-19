@@ -6,12 +6,9 @@
     background-size: cover;
     display: flex;
     justify-content: center;
-    overflow-y: scroll;
+    overflow-y: auto;
     color: white;
-}
-
-.mainContent::-webkit-scrollbar {
-    display: none;
+    padding: 0 1rem;
 }
 
 .mainContent .title {
@@ -21,25 +18,20 @@
     padding-top: 1rem;
 }
 
-.questionOption {
-    background: fixed;
-}
-
 .questionCard {
-    width: 40vw;
-    margin-top: 2rem;
-    height: 50vh;
-    padding: 3rem;
+    width: 90vw; /* Adjusts the width for mobile screens */
+    margin-top: 1rem;
+    padding: 2rem;
     background-color: rgba(17, 25, 40, 0.55);
     border-radius: 12px;
     backdrop-filter: blur(3px) saturate(180%);
-    animation: cardAnimation 0.4s linear forwards;
     cursor: pointer;
     user-select: none;
+    animation: cardAnimation 0.4s linear forwards;
 }
 
 .questionOption {
-    height: 24%;
+    height: 48px;
     width: 100%;
     margin-top: 0.7rem;
     border-radius: 1rem;
@@ -47,48 +39,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1rem; /* Adjust text size for better readability on mobile */
+}
+
+@media screen and (min-width: 600px) {
+    .questionCard {
+        width: 60vw;
+    }
+
+    .questionOption {
+        font-size: 1.2rem;
+    }
 }
 
 .faceInput {
     position: absolute;
     right: 0;
     transform-origin: top right;
-}
-
-#cameraInput {
-    display: none;
-}
-
-/* Mobile Optimizations */
-@media (max-width: 768px) {
-  .mainContent {
-    height: auto;
-    padding: 1rem;
-  }
-
-  .questionCard {
-    width: 90vw;
-    height: auto;
-    padding: 1.5rem;
-  }
-
-  .title {
-    font-size: 1.5rem;
-  }
-
-  .questionOption {
-    height: auto;
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
-
-  .faceInput {
-    transform: scale(0.5);
-    right: 5%;
-    top: 5%;
-  }
-
-  h3 {
-    font-size: 1.2rem;
-  }
 }
