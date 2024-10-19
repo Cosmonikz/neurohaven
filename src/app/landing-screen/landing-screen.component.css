@@ -5,76 +5,53 @@
     background-repeat: no-repeat;
     background-size: cover;
     overflow: hidden;
+    display: flex; /* Enable flexbox layout */
+    flex-direction: column; /* Arrange items in a column */
+    justify-content: flex-start; /* Align items to the top */
+    align-items: center; /* Center horizontally */
+    text-align: center; /* Center all text */
+    padding-top: 20px; /* Add some space from the top */
 }
 
-.mainScreen>h1 {
-    width: fit-content;
-    margin: 0 auto;
+
+.mainScreen > h1 {
     color: white;
-    padding-top: 1rem;
     letter-spacing: 1px;
     font-size: 52px;
-
     animation: animateUpperText 0.7s linear 0s 1 forwards;
-
 }
 
 .self {
     color: #00FFFF;
     opacity: 80%;
-
 }
 
 .calmYourself {
-
     font-size: 3rem;
     color: white;
-
 }
-
 
 .goBtn {
     background: #00FFFF;
     border-radius: 19px;
-    width: fit-content;
     padding-inline: 1.5rem;
     padding-block: 0.5rem;
     color: black;
     transition: all 0.3s;
+    cursor: pointer; /* Change cursor on hover */
 }
 
 .goBtn:hover {
     transform: scale(1.08);
 }
 
-.watchButton {
-    background: #00FFFF;
-    border-radius: 19px;
-    width: fit-content;
-    padding-inline: 1.5rem;
-    padding-block: 0.5rem;
-    color: black;
-    transition: all 0.3s;
-
-}
-
-.watchButton:hover {
-    transform: scale(1.08);
-}
-
-.btnHolders {
-    cursor: pointer;
-}
-
-
 .content {
-
     animation: animateContent 0.7s linear 0s 1 forwards;
 }
 
-.content >img {
+.content > img {
     height: 50vh;
-    margin-left: 3rem;
+    margin-top: 1rem; /* Space above the image */
 }
 
 @keyframes animateUpperText {
