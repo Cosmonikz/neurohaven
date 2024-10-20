@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { ApplicationService } from '../application.service';
 import { Router } from '@angular/router';
 
-// Declare external libraries (MediaPipe components)
+// MediaPipe Libraries
 declare var Camera: any;
 declare var FaceMesh: any;
 declare var drawConnectors: any;
@@ -13,11 +13,12 @@ declare var FACEMESH_TESSELATION: any;
   templateUrl: './question-screen.component.html',
   styleUrls: ['./question-screen.component.css']
 })
-export class QuestionScreenComponent implements OnInit, AfterViewInit {
-  videoElement: any;
-  canvasElement: any;
-  contextElem: any;
+export class QuestionScreenComponent implements OnInit, AfterViewInit, OnDestroy {
+  videoElement!: HTMLVideoElement;  // Using the definite assignment operator
+  canvasElement!: HTMLCanvasElement; // Using the definite assignment operator
+  contextElem!: CanvasRenderingContext2D; // Using the definite assignment operator
   camera: any;
+  isCameraInitialized: boolean = false;
 
   listOfQuestions: any[] = [];
   questionProgress = {
@@ -38,44 +39,67 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.setupCameraAndCanvas();
+    if (!this.isCameraInitialized) {
+      this.setupCameraAndCanvas();
+      this.isCameraInitialized = true;
+    }
   }
 
   setupCameraAndCanvas() {
-    this.videoElement = document.querySelector("#cameraInput");
-    this.canvasElement = document.querySelector("#canvasInput");
-    this.contextElem = this.canvasElement.getContext('2d');
+    this.videoElement = document.querySelector("#cameraInput") as HTMLVideoElement;
+    this.canvasElement = document.querySelector("#canvasInput") as HTMLCanvasElement;
 
+    // Set canvas size equal to the video size
+    this.canvasElement.width = 640; // Adjust as needed
+    this.canvasElement.height = 480; // Adjust as needed
+    this.contextElem = this.canvasElement.getContext('2d')!; // Use non-null assertion operator
+
+    // Initialize MediaPipe FaceMesh
     const faceMesh = new FaceMesh({
-      locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`,
+      locateFile: (file: string) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`,
     });
 
-    this.camera = new Camera(this.videoElement, {
-      onFrame: async () => {
-        await faceMesh.send({ image: this.videoElement });
-      },
-      width: 1280,
-      height: 720
+    faceMesh.setOptions({
+      maxNumFaces: 1,
+      refineLandmarks: true,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5,
     });
-
-    this.camera.start();
 
     faceMesh.onResults((results: any) => {
       this.handleFaceMeshResults(results);
     });
+
+    // Start camera
+    this.camera = new Camera(this.videoElement, {
+      onFrame: async () => {
+        await faceMesh.send({ image: this.videoElement });
+      },
+      width: 640,
+      height: 480,
+    });
+
+    this.camera.start();
   }
 
   handleFaceMeshResults(results: any) {
+    if (!this.contextElem) {
+      console.error('Canvas context is not defined!');
+      return;
+    }
+
     this.contextElem.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
     this.contextElem.drawImage(results.image, 0, 0, this.canvasElement.width, this.canvasElement.height);
 
-    if (results.multiFaceLandmarks) {
+    if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
       for (const landmarks of results.multiFaceLandmarks) {
         drawConnectors(this.contextElem, landmarks, FACEMESH_TESSELATION, {
           color: '#C0C0C070',
           lineWidth: 1,
         });
       }
+    } else {
+      console.warn('No face detected');
     }
   }
 
@@ -121,16 +145,21 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit {
     const totalScore = this.questionProgress.a * 3 + this.questionProgress.b * 2 + this.questionProgress.c * 1;
     const averageScore = totalScore / (this.questionProgress.answered || 1);
     let resultMessage = '';
-  
-    // Set conditions based on the averageScore
+
     if (averageScore >= 3) {
-      resultMessage = 'You do not need mental support.'; // Good mental health
+      resultMessage = 'You do not need mental support.';
     } else if (averageScore >= 2) {
-      resultMessage = 'You’re doing okay, but there’s room for improvement.'; // Okay
+      resultMessage = 'You’re doing okay, but there’s room for improvement.';
     } else {
-      resultMessage = 'Consider seeking support for better mental health.'; // Need support
+      resultMessage = 'Consider seeking support for better mental health.';
     }
-  
+
     this.router.navigate(['/results-screen'], { state: { result: resultMessage, score: Math.round(averageScore) } });
   }
-}  
+
+  ngOnDestroy(): void {
+    if (this.camera) {
+      this.camera.stop();
+    }
+  }
+}

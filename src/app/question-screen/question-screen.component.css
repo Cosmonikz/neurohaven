@@ -18,14 +18,20 @@
     right: 20px; /* Distance from the right */
     width: 150px; /* Width of the camera box */
     height: 150px; /* Height of the camera box */
-    border: 2px solid #00FFFF; /* Optional: Add a border to the camera box */
-    border-radius: 10px; /* Optional: Rounded corners */
     overflow: hidden; /* Hide overflow */
 }
 
 #cameraInput, #canvasInput {
+    position: absolute; /* Absolute positioning to overlap */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
     width: 100%; /* Make video and canvas fill the container */
     height: 100%; /* Make video and canvas fill the container */
+    z-index: 1; /* Set the base layer */
+}
+
+#canvasInput {
+    z-index: 2; /* Bring the canvas above the video */
 }
 
 .title {
