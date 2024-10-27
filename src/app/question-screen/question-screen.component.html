@@ -1,16 +1,21 @@
+<div *ngIf="showPopup" class="popup">
+    <div class="popup-content">
+        <span class="close-btn" (click)="closePopup()">×</span>
+        <img src="assets/mindmap.png" alt="Site Mindmap" />
+    </div>
+</div>
+
 <div class="mainContent">
     <div class="faceInput">
         <video id="cameraInput" autoplay playsinline></video>
         <canvas id="canvasInput"></canvas>
     </div>
-
     <div class="content">
         <h2 class="title">Answer The Following Questions</h2>
         <div class="questionList">
             <div *ngFor="let question of listOfQuestions; let position = index;">
                 <div class="questionCard">
                     <h3>Q) {{question.question}}</h3>
-
                     <div (click)="makeSelectionGreen('a_'+position, 'a')" class="questionOption a_{{position}}">
                         {{question.a}}
                     </div>

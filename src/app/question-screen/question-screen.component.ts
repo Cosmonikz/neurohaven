@@ -2,7 +2,6 @@ import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { ApplicationService } from '../application.service';
 import { Router } from '@angular/router';
 
-// MediaPipe Libraries
 declare var Camera: any;
 declare var FaceMesh: any;
 declare var drawConnectors: any;
@@ -14,12 +13,12 @@ declare var FACEMESH_TESSELATION: any;
   styleUrls: ['./question-screen.component.css']
 })
 export class QuestionScreenComponent implements OnInit, AfterViewInit, OnDestroy {
-  videoElement!: HTMLVideoElement;  // Using the definite assignment operator
-  canvasElement!: HTMLCanvasElement; // Using the definite assignment operator
-  contextElem!: CanvasRenderingContext2D; // Using the definite assignment operator
+  videoElement!: HTMLVideoElement;
+  canvasElement!: HTMLCanvasElement;
+  contextElem!: CanvasRenderingContext2D;
   camera: any;
   isCameraInitialized: boolean = false;
-
+  showPopup: boolean = true; // Show popup on load
   listOfQuestions: any[] = [];
   questionProgress = {
     a: 0,
@@ -48,13 +47,10 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit, OnDestroy
   setupCameraAndCanvas() {
     this.videoElement = document.querySelector("#cameraInput") as HTMLVideoElement;
     this.canvasElement = document.querySelector("#canvasInput") as HTMLCanvasElement;
+    this.canvasElement.width = 640;
+    this.canvasElement.height = 480;
+    this.contextElem = this.canvasElement.getContext('2d')!;
 
-    // Set canvas size equal to the video size
-    this.canvasElement.width = 640; // Adjust as needed
-    this.canvasElement.height = 480; // Adjust as needed
-    this.contextElem = this.canvasElement.getContext('2d')!; // Use non-null assertion operator
-
-    // Initialize MediaPipe FaceMesh
     const faceMesh = new FaceMesh({
       locateFile: (file: string) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`,
     });
@@ -70,7 +66,6 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit, OnDestroy
       this.handleFaceMeshResults(results);
     });
 
-    // Start camera
     this.camera = new Camera(this.videoElement, {
       onFrame: async () => {
         await faceMesh.send({ image: this.videoElement });
@@ -103,9 +98,12 @@ export class QuestionScreenComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
+  closePopup() {
+    this.showPopup = false;
+  }
+
   makeSelectionGreen(classGiven: string, count: string) {
     let position = classGiven.split("_")[1];
-
     const element = document.querySelector(`.${classGiven}`) as HTMLElement;
     if (element && element.style.backgroundColor !== "green") {
       switch (count) {

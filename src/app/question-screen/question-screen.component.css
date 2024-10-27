@@ -1,37 +1,83 @@
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.popup-content {
+    position: relative;
+    background: transparent; /* Makes the background fully transparent */
+    border-radius: 10px;
+    padding: 1rem;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.popup-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px; /* Adjust as needed */
+    cursor: pointer;
+    padding: 10px; /* For better clickable area */
+    color: white; /* Change this to your desired text color */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: semi-transparent background */
+    border: none; /* Remove default button border */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
+.close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Darken background on hover */
+}
+
+
 .mainContent {
-    background: url(/assets/134196.webp) no-repeat center center; /* Center the background */
+    background: url(/assets/134196.webp) no-repeat center center;
     width: 100vw;
     height: 100vh;
-    background-size: cover; /* Cover the whole area */
+    background-size: cover;
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
-    overflow-y: auto; /* Allow scrolling if content overflows */
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
     color: white;
     padding: 0 1rem;
-    position: relative; /* Ensure child elements can be absolutely positioned */
+    position: relative;
 }
 
 .faceInput {
-    position: absolute; /* Absolute positioning for the camera */
-    top: 20px; /* Distance from the top */
-    right: 20px; /* Distance from the right */
-    width: 150px; /* Width of the camera box */
-    height: 150px; /* Height of the camera box */
-    overflow: hidden; /* Hide overflow */
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
 }
 
 #cameraInput, #canvasInput {
-    position: absolute; /* Absolute positioning to overlap */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    width: 100%; /* Make video and canvas fill the container */
-    height: 100%; /* Make video and canvas fill the container */
-    z-index: 1; /* Set the base layer */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
 #canvasInput {
-    z-index: 2; /* Bring the canvas above the video */
+    z-index: 2;
 }
 
 .title {
@@ -39,18 +85,18 @@
     justify-content: center;
     color: white;
     padding-top: 1rem;
-    font-size: 2rem; /* Increase font size */
+    font-size: 2rem;
 }
 
 .questionList {
-    width: 100%; /* Make questionList take full width */
+    width: 100%;
     display: flex;
-    flex-direction: column; /* Stack question cards vertically */
-    align-items: center; /* Center align question cards */
+    flex-direction: column;
+    align-items: center;
 }
 
 .questionCard {
-    width: 90vw; /* Mobile-friendly width */
+    width: 90vw;
     margin-top: 1rem;
     padding: 2rem;
     background-color: rgba(17, 25, 40, 0.55);
@@ -59,7 +105,7 @@
     cursor: pointer;
     user-select: none;
     animation: cardAnimation 0.4s linear forwards;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .questionOption {
@@ -71,15 +117,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1rem; /* Adjust text size for better readability */
+    font-size: 1rem;
 }
 
 @media screen and (min-width: 600px) {
     .questionCard {
-        width: 60vw; /* Wider cards for larger screens */
+        width: 60vw;
     }
-
     .questionOption {
-        font-size: 1.2rem; /* Increase font size for larger screens */
+        font-size: 1.2rem;
     }
 }
